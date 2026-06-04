@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "GenerationRecord": {
+      "title": "GenerationRecord",
+      "description": "A record of an AI image generation including analysis and image URL",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "htmlInput": { "type": "string" },
+        "analysis": {
+          "type": "object",
+          "properties": {
+            "summary": { "type": "string" },
+            "inspiration": { "type": "string" },
+            "prompt": { "type": "string" },
+            "altText": { "type": "string" },
+            "caption": { "type": "string" },
+            "description": { "type": "string" },
+            "focusKeyword": { "type": "string" }
+          }
+        },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["id", "userId", "timestamp", "analysis", "imageUrl"]
+    }
+  },
+  "firestore": {
+    "/generations/{generationId}": {
+      "schema": "GenerationRecord",
+      "description": "Collection of generation records"
+    }
+  }
+}

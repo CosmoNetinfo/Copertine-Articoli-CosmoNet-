@@ -1,0 +1,56 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: generations
+// Document ID: {generationId}
+// Fields:
+//   - id: string (required) - Unique ID
+//   - userId: string (required) - Owner UID
+//   - timestamp: number (required) - Creation time
+//   - htmlInput: string (optional) - Source HTML
+//   - analysis: map (required) - AI Analysis result
+//   - imageUrl: string (required) - Base64 WebP image
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    function isValidGeneration(data) {
+      return data.keys().hasAll(['id', 'userId', 'timestamp', 'analysis', 'imageUrl']) &&
+             data.id is string &&
+             data.userId == request.auth.uid &&
+             data.timestamp is number &&
+             data.analysis is map &&
+             data.imageUrl is string &&
+             data.imageUrl.size() < 1048576; // Max 1MB
+    }
+
+    match /generations/{generationId} {
+      // Users can only see their own generations
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      
+      // Users can only create their own generations
+      allow create: if isAuthenticated() && isValidGeneration(request.resource.data);
+      
+      // Generations are immutable for now, or only owner can delete
+      allow update: if false; 
+      allow delete: if isAuthenticated() && isDocOwner();
+    }
+  }
+}

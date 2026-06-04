@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  /* Semantic color mapping */
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-text: var(--brand-text);
+  --color-brand-glass: var(--brand-glass);
+  --color-brand-border: var(--brand-border);
+  --color-brand-card: var(--brand-card);
+  --color-brand-muted: var(--brand-muted);
+}
+
+:root {
+  --brand-bg: #E4E3E0;
+  --brand-text: #141414;
+  --brand-glass: rgba(255, 255, 255, 0.7);
+  --brand-border: rgba(0, 0, 0, 0.05);
+  --brand-card: white;
+  --brand-muted: #6B7280; /* gray-500 */
+}
+
+.dark {
+  --brand-bg: #0A0A0A;
+  --brand-text: #F5F5F5;
+  --brand-glass: rgba(20, 20, 20, 0.7);
+  --brand-border: rgba(255, 255, 255, 0.1);
+  --brand-card: #141414;
+  --brand-muted: #9CA3AF; /* gray-400 */
+}
+
+@layer base {
+  body {
+    @apply bg-brand-bg text-brand-text font-sans antialiased transition-colors duration-300;
+  }
+}
+
+.glass {
+  @apply bg-brand-glass backdrop-blur-md border border-brand-border;
+}
+
+.btn-primary {
+  @apply bg-brand-text text-brand-bg px-6 py-3 rounded-full font-medium transition-all hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-secondary {
+  @apply bg-brand-card text-brand-text px-6 py-3 rounded-full font-medium border border-brand-border transition-all hover:opacity-80 active:scale-95;
+}

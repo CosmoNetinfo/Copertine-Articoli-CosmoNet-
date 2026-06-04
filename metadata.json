@@ -1,0 +1,6 @@
+{
+  "name": "CosmoNet Image Generator",
+  "description": "Analizza articoli HTML e genera immagini di copertina brandizzate con metadati SEO usando l'IA di Gemini.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
